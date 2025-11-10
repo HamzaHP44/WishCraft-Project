@@ -29,7 +29,10 @@ import Image from 'next/image';
 import placeholderData from '@/lib/placeholder-images.json';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Please enter a name.'),
+  name: z
+    .string()
+    .min(1, 'Please enter a name.')
+    .regex(/^[a-zA-Z\s]+$/, 'Only letters and spaces are allowed.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
