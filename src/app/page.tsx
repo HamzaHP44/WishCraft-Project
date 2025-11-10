@@ -60,16 +60,6 @@ export default function BirthdayPage() {
 
   return (
     <div className="relative min-h-screen w-full font-body text-foreground">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover opacity-20"
-      >
-        <source src="/videos/ink.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
       <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
         <Card className="w-full max-w-2xl bg-card/80 backdrop-blur-sm shadow-2xl">
           <CardHeader className="text-center">

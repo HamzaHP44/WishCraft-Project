@@ -81,6 +81,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    @apply bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300;
+  }
+  .dark body {
+    @apply bg-gradient-to-br from-blue-900 via-blue-950 to-black;
   }
 }
 
