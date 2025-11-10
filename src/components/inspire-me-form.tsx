@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useState, useTransition } from 'react';
+import Link from 'next/link';
 import { generateInspirationalQuote } from '@/ai/flows/generate-inspirational-quote';
 
 import { Button } from '@/components/ui/button';
@@ -32,7 +33,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Gift } from 'lucide-react';
 
 const formSchema = z.object({
   theme: z.string({
@@ -123,10 +124,15 @@ export function InspireMeForm() {
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <Button type="submit" size="lg" disabled={isPending}>
+          <CardFooter className="flex flex-col sm:flex-row justify-center gap-4">
+             <Button type="submit" size="lg" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isPending ? 'Generating...' : 'Generate Quote'}
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/birthday">
+                <Gift className="mr-2" /> Birthday Wish Generator
+              </Link>
             </Button>
           </CardFooter>
         </form>
