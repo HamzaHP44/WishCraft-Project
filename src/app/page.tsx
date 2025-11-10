@@ -24,7 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Loader2, Cake } from 'lucide-react';
+import { Loader2, Cake, ArrowLeft } from 'lucide-react';
 
 const formSchema = z.object({
   name: z
@@ -58,63 +58,74 @@ export default function BirthdayPage() {
     });
   };
 
+  const handleBack = () => {
+    setGeneratedWish(null);
+    setName('');
+    form.reset();
+  };
+
   return (
     <div className="relative min-h-screen w-full font-body text-foreground">
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
-        <Card className="w-full max-w-2xl bg-card/80 backdrop-blur-sm shadow-2xl">
-          <CardHeader className="text-center">
-            <div className="flex justify-center items-center gap-4">
-              <Cake className="h-12 w-12 text-primary" />
-              <CardTitle className="font-headline text-4xl md:text-5xl">Birthday Wishes</CardTitle>
-            </div>
-            <CardDescription className="text-base pt-2">
-              Create a special birthday message for someone you love.
-            </CardDescription>
-          </CardHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <CardContent className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter a name..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-              <CardFooter className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button type="submit" size="lg" disabled={isPending}>
-                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isPending ? 'Generating...' : 'Generate Wish'}
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 perspective">
+        {isPending ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <p className="text-lg">Generating your special wish...</p>
+          </div>
+        ) : !generatedWish ? (
+          <Card className="w-full max-w-2xl bg-card/80 backdrop-blur-sm shadow-2xl fade-in">
+            <CardHeader className="text-center">
+              <div className="flex justify-center items-center gap-4">
+                <Cake className="h-12 w-12 text-primary" />
+                <CardTitle className="font-headline text-4xl md:text-5xl">Birthday Wishes</CardTitle>
+              </div>
+              <CardDescription className="text-base pt-2">
+                Create a special birthday message for someone you love.
+              </CardDescription>
+            </CardHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <CardContent className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter a name..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+                <CardFooter className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Button type="submit" size="lg" disabled={isPending}>
+                    {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isPending ? 'Generating...' : 'Generate Wish'}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Form>
+          </Card>
+        ) : (
+          <Card className="w-full max-w-2xl bg-card/80 backdrop-blur-sm shadow-2xl animate-open-card" style={{ transformStyle: 'preserve-3d' }}>
+             <div className="p-8 text-center">
+              <h3 className="font-headline text-3xl md:text-4xl">Happy Birthday, {name}!</h3>
+              <div className="mt-8 border-t border-border pt-8">
+                  <p className="text-xl italic">
+                    {generatedWish}
+                  </p>
+              </div>
+              <CardFooter className="flex justify-center mt-8">
+                <Button onClick={handleBack} variant="outline">
+                  <ArrowLeft className="mr-2" /> Back
                 </Button>
               </CardFooter>
-            </form>
-          </Form>
-
-          {(isPending || generatedWish) && (
-            <div className="p-6 pt-0 text-center">
-              <div className="mt-6 border-t border-border pt-6 min-h-[10rem] flex items-center justify-center">
-                {isPending && !generatedWish && (
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                )}
-                {generatedWish && (
-                  <div key={generatedWish} className="fade-in text-left space-y-4">
-                     <h3 className="font-headline text-2xl text-center">Happy Birthday, {name}!</h3>
-                    <p className="text-lg">
-                      {generatedWish}
-                    </p>
-                  </div>
-                )}
-              </div>
             </div>
-          )}
-        </Card>
+          </Card>
+        )}
       </main>
     </div>
   );
